@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="nesting_scroll_focus_view_slide_start">60dp</dimen>
-    <dimen name="nesting_scroll_focus_view_slide_end">30dp</dimen>
+    <dimen name="nesting_scroll_focus_view_slide_start">70dp</dimen>
+    <dimen name="nesting_scroll_focus_view_slide_end">40dp</dimen>
     <dimen name="nesting_scroll_gap_size">32dp</dimen>
 </resources>

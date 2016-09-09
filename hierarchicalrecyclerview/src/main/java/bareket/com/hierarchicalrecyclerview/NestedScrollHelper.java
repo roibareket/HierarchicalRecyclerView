@@ -13,7 +13,7 @@ public class NestedScrollHelper {
     private final int FOCUS_VIEW_SLIDE_END;
     private final int FOCUS_VIEW_SLIDE_START;
     private final int NESTING_GAP;
-    private final int MAX_VISIBLE_NESTING = 3;
+    private final int MAX_VISIBLE_NESTING;
 
 
     private List<? extends NestedItem> commentDataList;
@@ -24,9 +24,9 @@ public class NestedScrollHelper {
         FOCUS_VIEW_SLIDE_START = context.getResources().getDimensionPixelSize(R.dimen.nesting_scroll_focus_view_slide_start);
         FOCUS_VIEW_SLIDE_END = context.getResources().getDimensionPixelSize(R.dimen.nesting_scroll_focus_view_slide_end);
         NESTING_GAP = context.getResources().getDimensionPixelSize(R.dimen.nesting_scroll_gap_size);
+        MAX_VISIBLE_NESTING = 3 * NESTING_GAP;
 
         this.layoutManager = layoutManager;
-
         onDataSetChange(commentDataList);
     }
 
@@ -67,7 +67,8 @@ public class NestedScrollHelper {
             focusedViewNesting = nestingMap.get(commentDataList.get(focusedViewPosition).getNestedItemId());
 
             if (focusedView.getTop() > FOCUS_VIEW_SLIDE_END) {
-                int aboveViewNesting = getRelativeNestingByPosition(focusedViewPosition - 1, focusedViewNesting);
+                Integer nesting = nestingMap.get(commentDataList.get(focusedViewPosition - 1).getNestedItemId());
+                int aboveViewNesting =  nesting - focusedViewNesting;
                 float shiftingPercentage = ((float) (focusedView.getTop() - FOCUS_VIEW_SLIDE_END)) / (FOCUS_VIEW_SLIDE_START - FOCUS_VIEW_SLIDE_END);
                 focusedViewShifting = (int) -(shiftingPercentage * aboveViewNesting * NESTING_GAP);
             }
@@ -75,13 +76,11 @@ public class NestedScrollHelper {
 
         for (int i = firstPosition; i <= lastPosition; i++) {
             View view = layoutManager.findViewByPosition(i);
-            Integer viewNesting = getRelativeNestingByPosition(i, focusedViewNesting);
-            view.setTranslationX(NESTING_GAP * viewNesting + focusedViewShifting);
+            Integer nesting = nestingMap.get(commentDataList.get(i).getNestedItemId());
+            Integer viewNesting =  nesting - focusedViewNesting;
+            int absoluteTranslationX = NESTING_GAP * viewNesting + focusedViewShifting;
+            int relativeTranslationX = Math.max(Math.min(absoluteTranslationX, MAX_VISIBLE_NESTING), -MAX_VISIBLE_NESTING);
+            view.setTranslationX(relativeTranslationX);
         }
-    }
-
-    private int getRelativeNestingByPosition(int position, int focusedViewNesting) {
-        Integer nesting = nestingMap.get(commentDataList.get(position).getNestedItemId());
-        return Math.min(nesting - focusedViewNesting, MAX_VISIBLE_NESTING);
     }
 }
