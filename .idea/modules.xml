@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/HierarchicalRecyclerView.iml" filepath="$PROJECT_DIR$/HierarchicalRecyclerView.iml" />
       <module fileurl="file://$PROJECT_DIR$/HirarchicalRecyclerView.iml" filepath="$PROJECT_DIR$/HirarchicalRecyclerView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/hierarchicalrecyclerview/hierarchicalrecyclerview.iml" filepath="$PROJECT_DIR$/hierarchicalrecyclerview/hierarchicalrecyclerview.iml" />
