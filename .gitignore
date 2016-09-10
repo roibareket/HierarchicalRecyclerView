@@ -10,3 +10,4 @@ description
 hooks/
 info/
 /.idea/
+/gradle/
