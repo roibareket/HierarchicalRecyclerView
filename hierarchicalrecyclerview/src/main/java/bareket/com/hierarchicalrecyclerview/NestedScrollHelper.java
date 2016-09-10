@@ -1,6 +1,7 @@
 package bareket.com.hierarchicalrecyclerview;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import java.util.HashMap;
@@ -50,7 +51,9 @@ public class NestedScrollHelper {
 
         int focusedViewNesting = 0;
         int focusedViewShifting = 0;
+        boolean showParentHint = false;
 
+        // get focused view
         if (firstPosition != lastPosition) {
             View focusedView = null;
             int focusedViewPosition = 0;
@@ -66,14 +69,20 @@ public class NestedScrollHelper {
 
             focusedViewNesting = nestingMap.get(commentDataList.get(focusedViewPosition).getNestedItemId());
 
+            // calc view shifting
             if (focusedView.getTop() > FOCUS_VIEW_SLIDE_END) {
                 Integer nesting = nestingMap.get(commentDataList.get(focusedViewPosition - 1).getNestedItemId());
                 int aboveViewNesting =  nesting - focusedViewNesting;
                 float shiftingPercentage = ((float) (focusedView.getTop() - FOCUS_VIEW_SLIDE_END)) / (FOCUS_VIEW_SLIDE_START - FOCUS_VIEW_SLIDE_END);
                 focusedViewShifting = (int) -(shiftingPercentage * aboveViewNesting * NESTING_GAP);
             }
+
+            // calc parent hint
+            int firstFocusNesting = nestingMap.get(commentDataList.get(firstPosition).getNestedItemId());
+            showParentHint = focusedViewNesting < firstFocusNesting;
         }
 
+        // adjust views translationX
         for (int i = firstPosition; i <= lastPosition; i++) {
             View view = layoutManager.findViewByPosition(i);
             Integer nesting = nestingMap.get(commentDataList.get(i).getNestedItemId());
@@ -82,5 +91,7 @@ public class NestedScrollHelper {
             int relativeTranslationX = Math.max(Math.min(absoluteTranslationX, MAX_VISIBLE_NESTING), -MAX_VISIBLE_NESTING);
             view.setTranslationX(relativeTranslationX);
         }
+
+
     }
 }

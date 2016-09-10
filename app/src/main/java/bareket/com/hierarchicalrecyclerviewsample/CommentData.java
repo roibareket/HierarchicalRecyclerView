@@ -7,13 +7,13 @@ import bareket.com.hierarchicalrecyclerview.NestedItem;
  * Created by roi.bareket.
  */
 public class CommentData implements NestedItem {
-    public Integer parentId;
-    public Integer id;
+    public String parentId;
+    public String id;
     public int avatar;
     public String name;
     public String comment;
 
-    public CommentData(Integer id, Integer parentId, int avatar, String name, String comment){
+    public CommentData(String id, String parentId, int avatar, String name, String comment){
         this.id = id;
         this.parentId = parentId;
         this.avatar = avatar;
@@ -22,12 +22,12 @@ public class CommentData implements NestedItem {
     }
 
     @Override
-    public Integer getNestedItemId() {
+    public Object getNestedItemId() {
         return id;
     }
 
     @Override
-    public Integer getNestedItemParentId() {
+    public Object getNestedItemParentId() {
         return parentId;
     }
 }
